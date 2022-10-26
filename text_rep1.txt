@@ -13,3 +13,5 @@ Probanje brencha
 ponovno brenchanje
 
 commitanje na brenchu izvan maina
+
+jos jedno comitnaje
