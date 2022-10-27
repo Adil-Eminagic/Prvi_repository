@@ -18,33 +18,47 @@ namespace FIT_Api_Example.Modul2.Controllers
         {
             this._dbContext = dbContext;
         }
-
-     
-        [HttpPost]
-        public Predmet Add([FromBody] DrzavaAddVM x)
+        public class PredmetAddVM
         {
-            var noviZapis = new Predmet();
-            {
-               
-            };
-
-            _dbContext.Add(newEmployee);
-            _dbContext.SaveChanges();
-            return newEmployee;
+            public string nazivPremeta { get; internal set; }
+            public string sifraPredmeta { get; internal set; }
+            public int ectsBodovi { get; internal set; }
         }
 
-        [HttpGet]
-        public List<CmbStavke> GetAll()
+
+        [HttpPost]
+        public Predmet Add([FromBody] PredmetAddVM x)
         {
-            var data = _dbContext.Drzava
-                .OrderBy(s => s.naziv)
-                .Select(s => new CmbStavke()
+            var noviZapis = new Predmet
+            {
+              Naziv=x.nazivPremeta,
+              Sifra=x.sifraPredmeta,
+              ECTS=x.ectsBodovi
+                    
+            };
+
+            _dbContext.Add(noviZapis);//priprema sql
+            _dbContext.SaveChanges();//execute sql
+            return noviZapis;
+        }
+
+        
+
+        [HttpGet]
+        public List<Predmet> GetAll()
+        {
+            var pripremaUpita = _dbContext.Predmet
+                .Where(s => s.Naziv.StartsWith("A"))
+                .OrderBy(s => s.Naziv)
+                .ThenBy(s => s.Sifra).Take(100)
+                .Select(s => new PredmetGetAllVM
                 {
-                    id = s.id,
-                    opis = s.naziv,
-                })
-                .AsQueryable();
-            return data.Take(100).ToList();
+                    Naziv=s.Naziv,
+                    ECTS=s.ECTS,
+                    ProsjecnaOcjena=0
+                });
+
+            return pripremaUpita.ToList();// execute select top 100 from predmet
         }
     }
 }
