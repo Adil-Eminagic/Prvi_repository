@@ -20,10 +20,10 @@ namespace FIT_Api_Example.Modul2.Controllers
         }
         public class PredmetAddVM
         {
-            public string nazivPremeta { get;  set; }
-            public string sifraPredmeta { get;  set; }
+            public string nazivPremeta { get; set; }
+            public string sifraPredmeta { get; set; }
             public int ectsBodovi { get; set; }
-          
+
         }
 
 
@@ -32,10 +32,10 @@ namespace FIT_Api_Example.Modul2.Controllers
         {
             var noviZapis = new Predmet
             {
-              Naziv=x.nazivPremeta,
-              Sifra=x.sifraPredmeta,
-              ECTS=x.ectsBodovi
-                    
+                Naziv = x.nazivPremeta,
+                Sifra = x.sifraPredmeta,
+                ECTS = x.ectsBodovi
+
             };
 
             _dbContext.Add(noviZapis);//priprema sql
@@ -43,15 +43,71 @@ namespace FIT_Api_Example.Modul2.Controllers
             return noviZapis;
         }
 
-        
+        public class PredmetSnimiVM
+        {
+            public int ID { get; set; }
+            public string nazivPremeta { get; set; }
+            public string sifraPredmeta { get; set; }
+            public int ectsBodovi { get; set; }
+
+        }
+
+        [HttpPost]
+        public Predmet Update( [FromBody] PredmetSnimiVM x)
+        {
+            //var objekat = _dbContext.Predmet.Find(ID);
+            var objekat = _dbContext.Predmet.Find(x.ID);
+            objekat.Naziv = x.nazivPremeta;
+            objekat.Sifra = x.sifraPredmeta;
+            objekat.ECTS = x.ectsBodovi;
+
+
+            //_dbContext.Add(noviZapis);//priprema sql
+            _dbContext.SaveChanges();//execute sql UPDATE predmet set.. where...
+            return objekat;
+        }
+
+        //public class PredmetSnimiVM
+        //{
+        //    public int ID { get; set; }
+        //    public string nazivPremeta { get; set; }
+        //    public string sifraPredmeta { get; set; }
+        //    public int ectsBodovi { get; set; }
+
+        //}
+
+        //[HttpPost]
+        //public Predmet Snimi( [FromBody] PredmetSnimiVM x)
+        //{
+        //    Predmet? objekat;
+        //    if (x.ID==0)
+        //    {
+        //        objekat=new Predmet();
+        //    }
+        //    else
+        //    {
+        //        objekat = _dbContext.Predmet.Find(x.ID);
+        //        _dbContext.Add(objekat);
+        //    }
+
+        //    objekat.Naziv = x.nazivPremeta;
+        //    objekat.Sifra = x.sifraPredmeta;
+        //    objekat.ECTS = x.ectsBodovi;
+
+
+           
+        //    _dbContext.SaveChanges();//execute sql UPDATE predmet set.. where...
+        //    return objekat;
+        //}
+
 
         [HttpGet]
-        public List<PredmetGetAllVM> GetAll(string? f, float min_prosjecna_ocjena)
+        public List<PredmetGetAllVM> GetAll(string? f, float? min_prosjecna_ocjena)
         {
+            
             var pripremaUpita = _dbContext.Predmet
                 .Where(s => (f==null || s.Naziv.ToLower().StartsWith(f.ToLower()))
-                && (_dbContext.Ocjena.Where(o=>o.PredmetID==s.Id).Average(z => z.BrojcanaOcjena)<=min_prosjecna_ocjena)
-                )
+                &&  (_dbContext.Ocjena.Where(o=>o.PredmetID==s.Id).Average(z => z.BrojcanaOcjena??0)<=min_prosjecna_ocjena))
                 .OrderBy(s => s.Naziv)
                 .ThenBy(s => s.Sifra).Take(100)
                 .Select(s => new PredmetGetAllVM
