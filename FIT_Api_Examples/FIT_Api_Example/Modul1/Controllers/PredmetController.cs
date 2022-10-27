@@ -45,7 +45,7 @@ namespace FIT_Api_Example.Modul2.Controllers
         
 
         [HttpGet]
-        public List<Predmet> GetAll()
+        public List<PredmetGetAllVM> GetAll()
         {
             var pripremaUpita = _dbContext.Predmet
                 .Where(s => s.Naziv.StartsWith("A"))
