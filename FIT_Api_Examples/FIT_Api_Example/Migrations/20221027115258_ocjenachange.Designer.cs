@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FIT_Api_Example.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221027072357_prijavaispitanesto")]
-    partial class prijavaispitanesto
+    [Migration("20221027115258_ocjenachange")]
+    partial class ocjenachange
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -47,6 +47,35 @@ namespace FIT_Api_Example.Migrations
                     b.HasIndex("PredmetID");
 
                     b.ToTable("Ispit");
+                });
+
+            modelBuilder.Entity("FIT_Api_Example.Modul1.Models.Ocjena", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<double?>("BrojcanaOcjena")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("Datum")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PredmetID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentID")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PredmetID");
+
+                    b.HasIndex("StudentID");
+
+                    b.ToTable("Ocjena");
                 });
 
             modelBuilder.Entity("FIT_Api_Example.Modul1.Models.Predmet", b =>
@@ -190,6 +219,25 @@ namespace FIT_Api_Example.Migrations
                         .IsRequired();
 
                     b.Navigation("Predmet");
+                });
+
+            modelBuilder.Entity("FIT_Api_Example.Modul1.Models.Ocjena", b =>
+                {
+                    b.HasOne("FIT_Api_Example.Modul1.Models.Predmet", "Predmet")
+                        .WithMany()
+                        .HasForeignKey("PredmetID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FIT_Api_Example.Modul2.Models.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Predmet");
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("FIT_Api_Example.Modul1.Models.PrijavaIspita", b =>

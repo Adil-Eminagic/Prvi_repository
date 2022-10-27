@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FIT_Api_Example.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221027073929_dodanaocjenaklasa")]
-    partial class dodanaocjenaklasa
+    [Migration("20221027114739_ocjenabroj")]
+    partial class ocjenabroj
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -57,10 +57,13 @@ namespace FIT_Api_Example.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int?>("BrojcanaOcjena")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Datum")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("IspitID")
+                    b.Property<int>("PredmetID")
                         .HasColumnType("int");
 
                     b.Property<int>("StudentID")
@@ -68,7 +71,7 @@ namespace FIT_Api_Example.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IspitID");
+                    b.HasIndex("PredmetID");
 
                     b.HasIndex("StudentID");
 
@@ -220,9 +223,9 @@ namespace FIT_Api_Example.Migrations
 
             modelBuilder.Entity("FIT_Api_Example.Modul1.Models.Ocjena", b =>
                 {
-                    b.HasOne("FIT_Api_Example.Modul1.Models.Ispit", "Ispit")
+                    b.HasOne("FIT_Api_Example.Modul1.Models.Predmet", "Predmet")
                         .WithMany()
-                        .HasForeignKey("IspitID")
+                        .HasForeignKey("PredmetID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -232,7 +235,7 @@ namespace FIT_Api_Example.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Ispit");
+                    b.Navigation("Predmet");
 
                     b.Navigation("Student");
                 });

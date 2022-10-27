@@ -14,9 +14,11 @@ namespace FIT_Api_Example.Modul1.Models
         public Student Student { get; set; }
         public int StudentID { get; set; }
 
-        [ForeignKey("IspitID")]
-        public Ispit Ispit { get; set; }
-        public int IspitID { get; set; }
+        [ForeignKey("PredmetID")]
+        public Predmet Predmet { get; set; }
+        public int PredmetID { get; set; }
+
+        public double? BrojcanaOcjena { get; set; }
 
     }
 }

@@ -46,10 +46,12 @@ namespace FIT_Api_Example.Modul2.Controllers
         
 
         [HttpGet]
-        public List<PredmetGetAllVM> GetAll()
+        public List<PredmetGetAllVM> GetAll(string? f, float min_prosjecna_ocjena)
         {
             var pripremaUpita = _dbContext.Predmet
-                .Where(s => s.Naziv.StartsWith("A"))
+                .Where(s => (f==null || s.Naziv.ToLower().StartsWith(f.ToLower()))
+                && (_dbContext.Ocjena.Where(o=>o.PredmetID==s.Id).Average(z => z.BrojcanaOcjena)>min_prosjecna_ocjena)
+                )
                 .OrderBy(s => s.Naziv)
                 .ThenBy(s => s.Sifra).Take(100)
                 .Select(s => new PredmetGetAllVM

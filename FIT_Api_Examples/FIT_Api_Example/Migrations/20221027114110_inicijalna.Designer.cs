@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FIT_Api_Example.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221013154930_ispit")]
-    partial class ispit
+    [Migration("20221027114110_inicijalna")]
+    partial class inicijalna
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,6 +49,32 @@ namespace FIT_Api_Example.Migrations
                     b.ToTable("Ispit");
                 });
 
+            modelBuilder.Entity("FIT_Api_Example.Modul1.Models.Ocjena", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Datum")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PredmetID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentID")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PredmetID");
+
+                    b.HasIndex("StudentID");
+
+                    b.ToTable("Ocjena");
+                });
+
             modelBuilder.Entity("FIT_Api_Example.Modul1.Models.Predmet", b =>
                 {
                     b.Property<int>("Id")
@@ -71,6 +97,32 @@ namespace FIT_Api_Example.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Predmet");
+                });
+
+            modelBuilder.Entity("FIT_Api_Example.Modul1.Models.PrijavaIspita", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<DateTime>("DatumPrijave")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("IspitID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("IspitID");
+
+                    b.HasIndex("StudentID");
+
+                    b.ToTable("PrijavaIspita");
                 });
 
             modelBuilder.Entity("FIT_Api_Example.Modul2.Models.Drzava", b =>
@@ -164,6 +216,44 @@ namespace FIT_Api_Example.Migrations
                         .IsRequired();
 
                     b.Navigation("Predmet");
+                });
+
+            modelBuilder.Entity("FIT_Api_Example.Modul1.Models.Ocjena", b =>
+                {
+                    b.HasOne("FIT_Api_Example.Modul1.Models.Predmet", "Predmet")
+                        .WithMany()
+                        .HasForeignKey("PredmetID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FIT_Api_Example.Modul2.Models.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Predmet");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("FIT_Api_Example.Modul1.Models.PrijavaIspita", b =>
+                {
+                    b.HasOne("FIT_Api_Example.Modul1.Models.Ispit", "Ispit")
+                        .WithMany()
+                        .HasForeignKey("IspitID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FIT_Api_Example.Modul2.Models.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ispit");
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("FIT_Api_Example.Modul2.Models.Opstina", b =>

@@ -55,10 +55,13 @@ namespace FIT_Api_Example.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<double?>("BrojcanaOcjena")
+                        .HasColumnType("float");
+
                     b.Property<DateTime>("Datum")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("IspitID")
+                    b.Property<int>("PredmetID")
                         .HasColumnType("int");
 
                     b.Property<int>("StudentID")
@@ -66,7 +69,7 @@ namespace FIT_Api_Example.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IspitID");
+                    b.HasIndex("PredmetID");
 
                     b.HasIndex("StudentID");
 
@@ -218,9 +221,9 @@ namespace FIT_Api_Example.Migrations
 
             modelBuilder.Entity("FIT_Api_Example.Modul1.Models.Ocjena", b =>
                 {
-                    b.HasOne("FIT_Api_Example.Modul1.Models.Ispit", "Ispit")
+                    b.HasOne("FIT_Api_Example.Modul1.Models.Predmet", "Predmet")
                         .WithMany()
-                        .HasForeignKey("IspitID")
+                        .HasForeignKey("PredmetID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -230,7 +233,7 @@ namespace FIT_Api_Example.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Ispit");
+                    b.Navigation("Predmet");
 
                     b.Navigation("Student");
                 });
