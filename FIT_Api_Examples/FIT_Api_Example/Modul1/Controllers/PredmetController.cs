@@ -20,9 +20,9 @@ namespace FIT_Api_Example.Modul2.Controllers
         }
         public class PredmetAddVM
         {
-            public string nazivPremeta { get; internal set; }
-            public string sifraPredmeta { get; internal set; }
-            public int ectsBodovi { get; internal set; }
+            public string nazivPremeta { get;  set; }
+            public string sifraPredmeta { get;  set; }
+            public int ectsBodovi { get;  set; }
         }
 
 
@@ -45,7 +45,7 @@ namespace FIT_Api_Example.Modul2.Controllers
         
 
         [HttpGet]
-        public List<Predmet> GetAll()
+        public List<PredmetGetAllVM> GetAll()
         {
             var pripremaUpita = _dbContext.Predmet
                 .Where(s => s.Naziv.StartsWith("A"))
