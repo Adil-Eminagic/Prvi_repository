@@ -18,7 +18,7 @@ namespace FIT_Api_Example.Modul1.Models
         public Predmet Predmet { get; set; }
         public int PredmetID { get; set; }
 
-        public double? BrojcanaOcjena { get; set; }
+        public int? BrojcanaOcjena { get; set; }
 
     }
 }

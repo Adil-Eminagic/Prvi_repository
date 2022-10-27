@@ -50,7 +50,7 @@ namespace FIT_Api_Example.Modul2.Controllers
         {
             var pripremaUpita = _dbContext.Predmet
                 .Where(s => (f==null || s.Naziv.ToLower().StartsWith(f.ToLower()))
-                && (_dbContext.Ocjena.Where(o=>o.PredmetID==s.Id).Average(z => z.BrojcanaOcjena)>min_prosjecna_ocjena)
+                && (_dbContext.Ocjena.Where(o=>o.PredmetID==s.Id).Average(z => z.BrojcanaOcjena)<=min_prosjecna_ocjena)
                 )
                 .OrderBy(s => s.Naziv)
                 .ThenBy(s => s.Sifra).Take(100)
