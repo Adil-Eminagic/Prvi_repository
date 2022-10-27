@@ -4,7 +4,7 @@
     {
         
             public string Naziv { get; set; }
-            public int ECTS { get; set; }
+            public string ECTS { get; set; }
             public double? ProsjecnaOcjena { get; set; }
         
     }

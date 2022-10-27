@@ -20,9 +20,10 @@ namespace FIT_Api_Example.Modul2.Controllers
         }
         public class PredmetAddVM
         {
-            public string nazivPremeta { get; internal set; }
-            public string sifraPredmeta { get; internal set; }
-            public int ectsBodovi { get; internal set; }
+            public string nazivPremeta { get;  set; }
+            public string sifraPredmeta { get;  set; }
+            public int ectsBodovi { get; set; }
+          
         }
 
 
@@ -54,7 +55,7 @@ namespace FIT_Api_Example.Modul2.Controllers
                 .Select(s => new PredmetGetAllVM
                 {
                     Naziv=s.Naziv,
-                    ECTS=s.ECTS,
+                    ECTS=s.ECTS.ToString(),
                     ProsjecnaOcjena=0
                 });
 
